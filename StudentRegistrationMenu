@@ -1,2 +1,86 @@
+import java.util.Scanner;
 
-WE NEED CODE IN THIS FILE NOW!!!!!!!!!!!!!!!
+/**
+ * Main driver class with CLI menu
+ */
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        CustomHashMap courses = new CustomHashMap(10);
+
+        while (true) {
+            System.out.println("\n1. Add Course");
+            System.out.println("2. Register Student");
+            System.out.println("3. Drop Student");
+            System.out.println("4. View Course");
+            System.out.println("5. Exit");
+
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Course Code: ");
+                    String code = sc.next();
+
+                    System.out.print("Capacity: ");
+                    int cap = sc.nextInt();
+
+                    courses.put(code, new Course(code, cap));
+                    System.out.println("Course added.");
+                    break;
+
+                case 2:
+                    System.out.print("Course Code: ");
+                    code = sc.next();
+
+                    Course c = courses.get(code);
+
+                    if (c == null) {
+                        System.out.println("Course not found.");
+                        break;
+                    }
+
+                    System.out.print("Student Name: ");
+                    String name = sc.next();
+
+                    Student s = new Student("ID" + name, name);
+                    c.enroll(s);
+                    break;
+
+                case 3:
+                    System.out.print("Course Code: ");
+                    code = sc.next();
+
+                    c = courses.get(code);
+
+                    if (c == null) {
+                        System.out.println("Course not found.");
+                        break;
+                    }
+
+                    System.out.print("Student ID: ");
+                    String id = sc.next();
+
+                    c.drop(id);
+                    break;
+
+                case 4:
+                    System.out.print("Course Code: ");
+                    code = sc.next();
+
+                    c = courses.get(code);
+
+                    if (c != null) {
+                        c.display();
+                    } else {
+                        System.out.println("Course not found.");
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Goodbye!");
+                    return;
+            }
+        }
+    }
+}
