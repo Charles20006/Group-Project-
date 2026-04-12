@@ -1,0 +1,17 @@
+public class Course {
+
+    private String courseCode;
+    private String courseName;
+    private int capacity;
+
+    private LinkedList<Student> roster;   // enrolls students
+    private Queue<Student> waitlist;      
+
+    public Course(String code, String name, int capacity) {
+        this.courseCode = code;
+        this.courseName = name;
+        this.capacity = capacity;
+        roster = new LinkedList<>();
+        waitlist = new Queue<>();
+   }
+}
