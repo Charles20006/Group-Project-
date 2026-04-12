@@ -1,0 +1,17 @@
+public void enrollStudent(Student s) {
+
+if (roster.contains(s)) {
+System.out.println("Student already enrolled.");
+return;
+}
+// if student already enrolled ^^
+
+if (roster.size() < capacity) {
+    roster.add(s);
+    System.outprintln("Student enrolled sucessfully.");
+  }
+else {
+    waitlist.inqueue(s);
+    System.outprintln("Course full. Student added to waitlist.");
+    }
+}
