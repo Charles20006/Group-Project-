@@ -124,5 +124,8 @@ public class Course {
      */
     public String getCourseCode() {
         return courseCode;
+    } 
+    public boolean isEnrolled(String studentId) {
+        return enrolled.find(studentId) != null;
     }
 }
