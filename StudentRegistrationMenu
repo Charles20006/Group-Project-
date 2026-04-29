@@ -29,6 +29,24 @@ public class Main {
                 case 8 -> {
                     System.out.println("Goodbye!");
                     return;
+                case 9 -> studentRegistry.displayAllStudents();
+                    break;
+
+                case 10 -> System.out.print("Course Code: ");
+                    String code = sc.next();
+
+                    Course c = courses.get(code);
+
+                if (c == null) {
+                    System.out.println("Course not found.");
+                    break;
+                }
+
+                    System.out.print("Student ID: ");
+                    String id = sc.next();
+
+                    c.searchStudent(id);
+                    break;
                 }
                 default -> System.out.println("Invalid choice.");
             }
@@ -48,6 +66,8 @@ public class Main {
         System.out.println("6. View All Courses");
         System.out.println("7. Remove Course");
         System.out.println("8. Exit");
+        System.out.println("9. View All Students");
+        System.out.println("10. Search Student in Course")
         System.out.print("Enter choice: ");
     }
 
