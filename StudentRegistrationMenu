@@ -97,6 +97,11 @@ public class Main {
             return;
         }
 
+        if (courses.get(code) != null) {
+            System.out.println("Course already exists.");
+            return;
+        }
+
         courses.put(code, new Course(code, cap));
         System.out.println("Course added.");
     }
