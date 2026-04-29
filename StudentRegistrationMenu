@@ -1,86 +1,182 @@
 import java.util.Scanner;
 
 /**
- * Main driver class with CLI menu
+ * Main driver class for Course Registration System
  */
 public class Main {
+
+    private static Scanner sc = new Scanner(System.in);
+
+    // Data storage
+    private static CustomHashMap courses = new CustomHashMap(10);
+    private static StudentLinkedList students = new StudentLinkedList(); // simple registry
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        CustomHashMap courses = new CustomHashMap(10);
 
         while (true) {
-            System.out.println("\n1. Add Course");
-            System.out.println("2. Register Student");
-            System.out.println("3. Drop Student");
-            System.out.println("4. View Course");
-            System.out.println("5. Exit");
+            printMenu();
 
-            int choice = sc.nextInt();
+            int choice = getValidInt();
 
             switch (choice) {
-                case 1:
-                    System.out.print("Course Code: ");
-                    String code = sc.next();
-
-                    System.out.print("Capacity: ");
-                    int cap = sc.nextInt();
-
-                    courses.put(code, new Course(code, cap));
-                    System.out.println("Course added.");
-                    break;
-
-                case 2:
-                    System.out.print("Course Code: ");
-                    code = sc.next();
-
-                    Course c = courses.get(code);
-
-                    if (c == null) {
-                        System.out.println("Course not found.");
-                        break;
-                    }
-
-                    System.out.print("Student Name: ");
-                    String name = sc.next();
-
-                    Student s = new Student("ID" + name, name);
-                    c.enroll(s);
-                    break;
-
-                case 3:
-                    System.out.print("Course Code: ");
-                    code = sc.next();
-
-                    c = courses.get(code);
-
-                    if (c == null) {
-                        System.out.println("Course not found.");
-                        break;
-                    }
-
-                    System.out.print("Student ID: ");
-                    String id = sc.next();
-
-                    c.drop(id);
-                    break;
-
-                case 4:
-                    System.out.print("Course Code: ");
-                    code = sc.next();
-
-                    c = courses.get(code);
-
-                    if (c != null) {
-                        c.display();
-                    } else {
-                        System.out.println("Course not found.");
-                    }
-                    break;
-
-                case 5:
+                case 1 -> addCourse();
+                case 2 -> registerStudent();
+                case 3 -> dropStudent();
+                case 4 -> viewCourse();
+                case 5 -> viewStudentSchedule();
+                case 6 -> viewAllCourses();
+                case 7 -> removeCourse();
+                case 8 -> {
                     System.out.println("Goodbye!");
                     return;
+                }
+                default -> System.out.println("Invalid choice.");
             }
         }
+    }
+
+    /**
+     * Display menu options
+     */
+    private static void printMenu() {
+        System.out.println("\n===== Course Registration System =====");
+        System.out.println("1. Add Course");
+        System.out.println("2. Register Student");
+        System.out.println("3. Drop Student");
+        System.out.println("4. View Course");
+        System.out.println("5. View Student Schedule");
+        System.out.println("6. View All Courses");
+        System.out.println("7. Remove Course");
+        System.out.println("8. Exit");
+        System.out.print("Enter choice: ");
+    }
+
+    /**
+     * Safely get integer input
+     */
+    private static int getValidInt() {
+        while (!sc.hasNextInt()) {
+            System.out.print("Invalid input. Enter a number: ");
+            sc.next();
+        }
+        return sc.nextInt();
+    }
+
+    /**
+     * Add a new course
+     */
+    private static void addCourse() {
+        System.out.print("Course Code: ");
+        String code = sc.next();
+
+        System.out.print("Capacity: ");
+        int cap = getValidInt();
+
+        if (cap <= 0) {
+            System.out.println("Capacity must be positive.");
+            return;
+        }
+
+        courses.put(code, new Course(code, cap));
+        System.out.println("Course added.");
+    }
+
+    /**
+     * Register student for a course
+     */
+    private static void registerStudent() {
+        System.out.print("Course Code: ");
+        String code = sc.next();
+
+        Course c = courses.get(code);
+
+        if (c == null) {
+            System.out.println("Course not found.");
+            return;
+        }
+
+        System.out.print("Student Name: ");
+        String name = sc.next();
+
+        // Check if student already exists
+        Student s = students.find(name);
+
+        if (s == null) {
+            s = new Student(name);
+            students.add(s);
+            System.out.println("New student created: " + s);
+        }
+
+        c.enroll(s);
+    }
+
+    /**
+     * Drop a student from a course
+     */
+    private static void dropStudent() {
+        System.out.print("Course Code: ");
+        String code = sc.next();
+
+        Course c = courses.get(code);
+
+        if (c == null) {
+            System.out.println("Course not found.");
+            return;
+        }
+
+        System.out.print("Student ID: ");
+        String id = sc.next();
+
+        c.drop(id);
+    }
+
+    /**
+     * View a specific course
+     */
+    private static void viewCourse() {
+        System.out.print("Course Code: ");
+        String code = sc.next();
+
+        Course c = courses.get(code);
+
+        if (c != null) {
+            c.display();
+        } else {
+            System.out.println("Course not found.");
+        }
+    }
+
+    /**
+     * View student schedule
+     */
+    private static void viewStudentSchedule() {
+        System.out.print("Student Name: ");
+        String name = sc.next();
+
+        Student s = students.find(name);
+
+        if (s != null) {
+            s.displaySchedule();
+        } else {
+            System.out.println("Student not found.");
+        }
+    }
+
+    /**
+     * View all courses
+     */
+    private static void viewAllCourses() {
+        courses.displayAll();
+    }
+
+    /**
+     * Remove a course
+     */
+    private static void removeCourse() {
+        System.out.print("Course Code: ");
+        String code = sc.next();
+
+        courses.remove(code);
+        System.out.println("Course removed (if it existed).");
     }
 }
