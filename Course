@@ -1,64 +1,128 @@
 public class Course {
-
     private String courseCode;
-    private String courseName;
     private int capacity;
 
-    private LinkedList<Student> roster;   // enrolls students
-    private Queue<Student> waitlist;      
+    private StudentLinkedList enrolled; // Custom LinkedList
+    private Queue<Student> waitlist;    // FIFO waitlist
 
-    public Course(String code, String name, int capacity) {
+    /**
+     * Constructor to initialize course
+     */
+    public Course(String code, int capacity) {
         this.courseCode = code;
-        this.courseName = name;
         this.capacity = capacity;
-        roster = new LinkedList<>();
-        waitlist = new Queue<>();
-   }
+        this.enrolled = new StudentLinkedList();
+        this.waitlist = new Queue<>();
+    }
 
-/**
-     * Enroll a student or add to waitlist if full
+    /**
+     * Enroll a student in the course
+     * If full, student is added to waitlist
      */
     public void enroll(Student s) {
+
+        // Prevent duplicate enrollment
+        if (enrolled.find(s.getId()) != null) {
+            System.out.println("Student already enrolled.");
+            return;
+        }
+
+        // Prevent duplicate waitlist entry
+        if (waitlist.contains(s)) {
+            System.out.println("Student already on waitlist.");
+            return;
+        }
+
+        // If space available, enroll student
         if (enrolled.size() < capacity) {
             enrolled.add(s);
-            System.out.println(s.getName() + " enrolled.");
-        } else {
+
+            // Optional: track student's schedule
+            // s.addCourse(this);
+
+            System.out.println(s.getName() + " successfully enrolled in " + courseCode + ".");
+        } 
+        else {
+            // Otherwise, add to waitlist
             waitlist.enqueue(s);
-            System.out.println("Course full. Added to waitlist.");
+            System.out.println("Course full. " + s.getName() + " added to waitlist.");
         }
     }
 
     /**
-     * Drop a student and promote from waitlist if possible
+     * Drop a student from the course
+     * If a student is dropped, promote next from waitlist
      */
     public void drop(String studentId) {
+
+        // Edge case: empty course
+        if (enrolled.size() == 0) {
+            System.out.println("No students enrolled in this course.");
+            return;
+        }
+
         boolean removed = enrolled.remove(studentId);
 
         if (removed) {
-            System.out.println("Student dropped.");
+            System.out.println("Student dropped from " + courseCode + ".");
 
-            // Promote from waitlist
+            // Promote next student from waitlist if available
             if (!waitlist.isEmpty()) {
                 Student next = waitlist.dequeue();
                 enrolled.add(next);
-                System.out.println(next.getName() + " moved from waitlist.");
+
+                // Optional: update schedule
+                // next.addCourse(this);
+
+                System.out.println(next.getName() + " moved from waitlist to enrolled.");
             }
-        } else {
-            System.out.println("Student not found.");
+        } 
+        else {
+            System.out.println("Student not found in enrolled list.");
         }
     }
 
     /**
-     * Display course info
+     * Search for a student in the course
+     */
+    public void searchStudent(String studentId) {
+
+        Student s = enrolled.find(studentId);
+
+        if (s != null) {
+            System.out.println("Found in enrolled: " + s);
+            return;
+        }
+
+        // Optional: could also search waitlist (advanced)
+        System.out.println("Student not found in this course.");
+    }
+
+    /**
+     * Display course information
      */
     public void display() {
-        System.out.println("\nCourse: " + courseCode);
-        System.out.println("Enrolled:");
-        enrolled.display();
+        System.out.println("\n==============================");
+        System.out.println("Course: " + courseCode);
+        System.out.println("Capacity: " + enrolled.size() + "/" + capacity);
 
-        System.out.println("Waitlist:");
+        System.out.println("\nEnrolled Students:");
+        if (enrolled.size() == 0) {
+            System.out.println("None");
+        } else {
+            enrolled.display();
+        }
+
+        System.out.println("\nWaitlist:");
         waitlist.display();
+
+        System.out.println("==============================\n");
     }
-}
+
+    /**
+     * Getter for course code (useful for other features)
+     */
+    public String getCourseCode() {
+        return courseCode;
     }
 }
