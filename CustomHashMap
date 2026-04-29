@@ -1,17 +1,3 @@
-/**
- * Custom HashMap implementation using chaining
- */
-class HashNode {
-    String key;
-    Course value;
-    HashNode next;
-
-    public HashNode(String key, Course value) {
-        this.key = key;
-        this.value = value;
-    }
-}
-
 public class CustomHashMap {
     private HashNode[] table;
 
@@ -19,47 +5,56 @@ public class CustomHashMap {
         table = new HashNode[capacity];
     }
 
-    /**
-     * Hash function to compute index
-     */
     private int hash(String key) {
         return Math.abs(key.hashCode() % table.length);
     }
 
-    /**
-     * Insert or update course
-     */
     public void put(String key, Course value) {
         int index = hash(key);
-        HashNode head = table[index];
-
-        while (head != null) {
-            if (head.key.equals(key)) {
-                head.value = value;
-                return;
-            }
-            head = head.next;
-        }
 
         HashNode newNode = new HashNode(key, value);
         newNode.next = table[index];
         table[index] = newNode;
     }
 
-    /**
-     * Retrieve course by key
-     */
     public Course get(String key) {
         int index = hash(key);
-        HashNode head = table[index];
+        HashNode current = table[index];
 
-        while (head != null) {
-            if (head.key.equals(key)) {
-                return head.value;
+        while (current != null) {
+            if (current.key.equals(key)) {
+                return current.value;
             }
-            head = head.next;
+            current = current.next;
         }
-
         return null;
+    }
+
+    public void remove(String key) {
+        int index = hash(key);
+        HashNode current = table[index];
+        HashNode prev = null;
+
+        while (current != null) {
+            if (current.key.equals(key)) {
+                if (prev == null) {
+                    table[index] = current.next;
+                } else {
+                    prev.next = current.next;
+                }
+                return;
+            }
+            prev = current;
+            current = current.next;
+        }
+    }
+
+    public void displayAll() {
+        for (HashNode node : table) {
+            while (node != null) {
+                node.value.display();
+                node = node.next;
+            }
+        }
     }
 }
