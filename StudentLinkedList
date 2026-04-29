@@ -1,0 +1,174 @@
+public class StudentLinkedList {
+    private Node<Object> head;
+
+    /**
+     * Add student node
+     */
+    public void add(Student s) {
+        Node<Object> newNode = new Node<>(s);
+
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+
+        Node<Object> current = head;
+        while (current.next != null) {
+            current = current.next;
+        }
+
+        current.next = newNode;
+    }
+
+    /**
+     * Add course node (for schedule)
+     */
+    public void addCourse(Course c) {
+        Node<Object> newNode = new Node<>(c);
+
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+
+        Node<Object> current = head;
+        while (current.next != null) {
+            current = current.next;
+        }
+
+        current.next = newNode;
+    }
+
+    /**
+     * Find student by ID
+     */
+    public Student find(String id) {
+        Node<Object> current = head;
+
+        while (current != null) {
+            if (current.data instanceof Student s) {
+                if (s.getId().equals(id)) {
+                    return s;
+                }
+            }
+            current = current.next;
+        }
+        return null;
+    }
+
+    /**
+     * Find course by code
+     */
+    public Course findCourse(String code) {
+        Node<Object> current = head;
+
+        while (current != null) {
+            if (current.data instanceof Course c) {
+                if (c.getCourseCode().equals(code)) {
+                    return c;
+                }
+            }
+            current = current.next;
+        }
+        return null;
+    }
+
+    /**
+     * Remove student
+     */
+    public boolean remove(String id) {
+        if (head == null) return false;
+
+        if (head.data instanceof Student s && s.getId().equals(id)) {
+            head = head.next;
+            return true;
+        }
+
+        Node<Object> current = head;
+
+        while (current.next != null) {
+            if (current.next.data instanceof Student s &&
+                s.getId().equals(id)) {
+
+                current.next = current.next.next;
+                return true;
+            }
+            current = current.next;
+        }
+
+        return false;
+    }
+
+    /**
+     * Remove course from schedule
+     */
+    public void removeCourse(String code) {
+        if (head == null) return;
+
+        if (head.data instanceof Course c &&
+            c.getCourseCode().equals(code)) {
+            head = head.next;
+            return;
+        }
+
+        Node<Object> current = head;
+
+        while (current.next != null) {
+            if (current.next.data instanceof Course c &&
+                c.getCourseCode().equals(code)) {
+
+                current.next = current.next.next;
+                return;
+            }
+            current = current.next;
+        }
+    }
+
+    /**
+     * Display students
+     */
+    public void display() {
+        Node<Object> current = head;
+
+        if (current == null) {
+            System.out.println("None");
+            return;
+        }
+
+        while (current != null) {
+            System.out.println("- " + current.data);
+            current = current.next;
+        }
+    }
+
+    /**
+     * Display courses
+     */
+    public void displayCourses() {
+        Node<Object> current = head;
+
+        if (current == null) {
+            System.out.println("No courses.");
+            return;
+        }
+
+        while (current != null) {
+            if (current.data instanceof Course c) {
+                System.out.println("- " + c.getCourseCode());
+            }
+            current = current.next;
+        }
+    }
+
+    public int size() {
+        int count = 0;
+        Node<Object> current = head;
+
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+
+        return count;
+    }
+}
