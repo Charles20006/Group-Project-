@@ -107,7 +107,7 @@ public class Main {
             System.out.println("New student created: " + s);
         }
 
-        c.enroll(s);
+        Enrollment.enrollStudent(s, c);
     }
 
     /**
@@ -127,7 +127,7 @@ public class Main {
         System.out.print("Student ID: ");
         String id = sc.next();
 
-        c.drop(id);
+        Enrollment.dropStudent(s, c);
     }
 
     /**
