@@ -9,7 +9,7 @@ public class Main {
 
     // Data storage
     private static CustomHashMap courses = new CustomHashMap(10);
-    private static StudentLinkedList students = new StudentLinkedList(); // simple registry
+    private static StudentRegistry studentRegistry = new StudentRegistry(); // simple registry
 
     public static void main(String[] args) {
 
