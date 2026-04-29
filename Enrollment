@@ -1,17 +1,54 @@
-public void enrollStudent(Student s) {
+/**
+ * Enrollment service class
+ * Handles interaction between Student and Course
+ */
+public class Enrollment {
 
-if (roster.contains(s)) {
-System.out.println("Student already enrolled.");
-return;
-}
-// if student already enrolled ^^
+    /**
+     * Register a student into a course
+     */
+    public static void enrollStudent(Student s, Course c) {
 
-if (roster.size() < capacity) {
-    roster.add(s);
-    System.outprintln("Student enrolled sucessfully.");
-  }
-else {
-    waitlist.inqueue(s);
-    System.outprintln("Course full. Student added to waitlist.");
+        if (c == null || s == null) {
+            System.out.println("Invalid student or course.");
+            return;
+        }
+
+        // Delegate to Course logic
+        c.enroll(s);
+
+        // OPTIONAL: update student schedule if enrolled
+        // (only if not waitlisted — depends on your design)
+        if (c.isEnrolled(s.getId())) {
+            s.addCourse(c);
+        }
+    }
+
+    /**
+     * Drop a student from a course
+     */
+    public static void dropStudent(Student s, Course c) {
+
+        if (c == null || s == null) {
+            System.out.println("Invalid student or course.");
+            return;
+        }
+
+        c.drop(s.getId());
+
+        // Update student schedule
+        s.removeCourse(c.getCourseCode());
+    }
+
+    /**
+     * Check enrollment status
+     */
+    public static void checkEnrollment(Student s, Course c) {
+
+        if (c.isEnrolled(s.getId())) {
+            System.out.println(s.getName() + " is enrolled in " + c.getCourseCode());
+        } else {
+            System.out.println(s.getName() + " is NOT enrolled in " + c.getCourseCode());
+        }
     }
 }
