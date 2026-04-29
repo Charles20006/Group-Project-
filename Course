@@ -14,4 +14,51 @@ public class Course {
         roster = new LinkedList<>();
         waitlist = new Queue<>();
    }
+
+/**
+     * Enroll a student or add to waitlist if full
+     */
+    public void enroll(Student s) {
+        if (enrolled.size() < capacity) {
+            enrolled.add(s);
+            System.out.println(s.getName() + " enrolled.");
+        } else {
+            waitlist.enqueue(s);
+            System.out.println("Course full. Added to waitlist.");
+        }
+    }
+
+    /**
+     * Drop a student and promote from waitlist if possible
+     */
+    public void drop(String studentId) {
+        boolean removed = enrolled.remove(studentId);
+
+        if (removed) {
+            System.out.println("Student dropped.");
+
+            // Promote from waitlist
+            if (!waitlist.isEmpty()) {
+                Student next = waitlist.dequeue();
+                enrolled.add(next);
+                System.out.println(next.getName() + " moved from waitlist.");
+            }
+        } else {
+            System.out.println("Student not found.");
+        }
+    }
+
+    /**
+     * Display course info
+     */
+    public void display() {
+        System.out.println("\nCourse: " + courseCode);
+        System.out.println("Enrolled:");
+        enrolled.display();
+
+        System.out.println("Waitlist:");
+        waitlist.display();
+    }
+}
+    }
 }
