@@ -1,0 +1,22 @@
+public class StudentRegistry {
+    private StudentLinkedList students;
+
+    public StudentRegistry() {
+        students = new StudentLinkedList();
+    }
+
+    public void addStudent(Student s) {
+        if (findByName(s.getName()) == null) {
+            students.add(s);
+        }
+    }
+
+    public Student findByName(String name) {
+        return students.findByName(name);
+    }
+
+    public void displayAllStudents() {
+        System.out.println("\nAll Students:");
+        students.display();
+    }
+}
