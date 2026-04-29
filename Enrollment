@@ -13,8 +13,7 @@ public class Enrollment {
         // Delegate to Course logic
         c.enroll(s);
 
-        // OPTIONAL: update student schedule if enrolled
-        // (only if not waitlisted — depends on your design)
+    
         if (c.isEnrolled(s.getId())) {
             s.addCourse(c);
         }
