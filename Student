@@ -1,5 +1,6 @@
 public class Student extends Person {
     private static int counter = 1000;
+    private static final int MAX_COURSES = 5;
 
     private String id;
     private StudentLinkedList courses; // Student schedule
@@ -20,6 +21,10 @@ public class Student extends Person {
     public void addCourse(Course c) {
         if (courses.findCourse(c.getCourseCode()) == null) {
             courses.addCourse(c);
+        }
+        if (courses.size() >= MAX_COURSES) {
+    System.out.println("Student has reached max course load.");
+    return;
         }
     }
 
