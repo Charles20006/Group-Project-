@@ -1,6 +1,8 @@
-Project: Student Registration Application
-Team: Charles Ellis, Andy Mohammed, Sam O'Bryant IV
-Course: Data Structures
+/**
+ *Project: Student Registration Application
+ *Team: Charles Ellis, Andy Mohammed, Sam O'Bryant IV
+ *Course: Data Structures
+ */
 
 public class Course {
     private String courseCode;
