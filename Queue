@@ -1,6 +1,9 @@
-/**
- * Queue implementation for waitlist
- */
+Project: Student Registration Application
+Team: Charles Ellis, Andy Mohammed, Sam O'Bryant IV
+Course: Data Structures
+
+
+
 public class Queue<T> {
     private Node<T> front, rear;
 
