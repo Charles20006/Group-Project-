@@ -1,3 +1,9 @@
+Project: Student Registration Application
+Team: Charles Ellis, Andy Mohammed, Sam O'Bryant IV
+Course: Data Structures
+
+
+
 public class Student extends Person {
     private static int counter = 1000;
     private static final int MAX_COURSES = 5;
